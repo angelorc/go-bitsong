@@ -30,3 +30,25 @@ A **fan token** is characterized by:
 | denom | `string` | It is an hash calculated on Owner, Symbol, and Name of the fan token. It is the hash identifying the fan token and is used to [prevent the creation of identical tokens](#Uniqueness-of-the-denom). |
 | metadata | `banktypes.Metadata` | It is made up of the description, the denom, the symbol and a set of denomUnits. It is generated and it is not directly editable.|
 | issueFee | `sdk.Coin` | It is chosen by the user. It describes the issuing fee both for for the `amount` and for the `coin`. An example value could be `1000000ubtsg`.|
+
+## Lifecycle of a fan token
+
+It is possible to entirely represent the lifecycle of a fan token through Finite State Machine (FSM) diagrams. We will present two representations:
+
+- the first referring to the fan token **object**. We can compare such a definition with that of currency (e.g., Euro, Dollar, BitSong);
+- the second, instead, is referred to the lifecycle of the fan token **instance**. Such definition is comparable with that of coin/money (e.g., the specific 1 Euro coin you could have in your pocket at a particular moment in time).
+
+We can describe the lifecycle of a fan token **object** through two states.
+
+![Fantoken object lifecycle](img/fantoken_object_lifecycle.png "Fantoken object lifecycle")
+
+Referring to the figure above, once the fan token is detailed in the documentation, to "create" the fan token, we need to **issue it**. This operation leads to the birth of the object and thus to its first state, state _1_. Here, the token is related to an owner, which can mint it. From this state, the owner can perform two actions on the object:
+
+- to **transfer the ownership**, which produces the changing of the owner, without modifying the landing state;
+- to **disable the minting ability**, which produces a state change to the state _2_. Here, the owner cannot mint the fan token anymore.
+
+Also referring to the lifecycle of a fan token **instance**, it is possible to identify two states.
+
+![Fantoken instance lifecycle](img/fantoken_instance_lifecycle.png "Fantoken instance lifecycle")
+
+With respect to the figure above, when the fan token object is issued, we can **mint** it.
