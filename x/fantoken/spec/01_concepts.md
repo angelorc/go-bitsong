@@ -51,4 +51,7 @@ Also referring to the lifecycle of a fan token **instance**, it is possible to i
 
 ![Fantoken instance lifecycle](img/fantoken_instance_lifecycle.png "Fantoken instance lifecycle")
 
-With respect to the figure above, when the fan token object is issued, we can **mint** it.
+With respect to the figure above, when the fan token object is issued, we can **mint** it. Minting leads to the birth of a new instance, moving the fan token instance to state _1_. In this state, the token can be:
+
+- **traded**, which produces the changing of the owner, without modifying the landing state;
+- **burned**, which produces a state change to the state _2_, where the owner cannot operate on the fan token instance anymore.

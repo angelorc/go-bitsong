@@ -32,7 +32,9 @@ Features that may be added in the future are described in Future Improvements.
 ## Table of Contents
 
 1. **[Concepts](01_concepts.md)**
+   - [Conventions](01_concepts.md#Conventions)
    - [Fan Token](01_concepts.md#FanToken)
+   - [Lifecycle of a fan token](01_concepts.md#Lifecycle-of-a-fan-token)
 2. **[State](02_state.md)**
    - [Fan Token](02_state.md#FanToken)
    - [Params](02_state.md#Params)
