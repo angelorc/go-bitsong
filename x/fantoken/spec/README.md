@@ -35,6 +35,7 @@ Features that may be added in the future are described in Future Improvements.
    - [Conventions](01_concepts.md#Conventions)
    - [Fan Token](01_concepts.md#Fan-token)
    - [Lifecycle of a fan token](01_concepts.md#Lifecycle-of-a-fan-token)
+   - [Uniqueness of the denom](01_concepts.md#Uniqueness-of-the-denom)
 2. **[State](02_state.md)**
    - [Fan Token](02_state.md#FanToken)
    - [Params](02_state.md#Params)

@@ -57,3 +57,15 @@ Concerning to the figure above, when the fan token object is issued, we can **mi
 
 - **traded**, which produces the changing of the owner, without modifying the landing state;
 - **burned**, which produces a state change to the state _2_, where the owner cannot operate on the fan token instance anymore.
+
+## Uniqueness of the denom
+
+The _denom_ is calculated on the Owner, Symbol, and Name of the fan token.
+
+```go
+func GetFantokenDenom(creator sdk.AccAddress, symbol, name string) string {
+	return "ft" + tmcrypto.AddressHash([]byte(creator.String()+symbol+name)).String()
+}
+```
+
+The _denom_ of every fan token starts with the prefix `ft`. Follows a **hash** of Owner, Symbol, and Name of the fan token. This _denom_ is used as base denom for the fan token, and, for this reason, it should be **unique**. In this sense, since the hash also depends on the creator, multiple fan tokens with the same name and symbol can co-exist. In this case, they can not be created by the same account.
