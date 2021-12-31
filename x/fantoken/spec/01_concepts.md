@@ -35,7 +35,7 @@ A **fan token** is characterized by:
 
 It is possible to entirely represent the lifecycle of a fan token through Finite State Machine (FSM) diagrams. We will present two representations:
 
-- the first referring to the fan token **object**. We can compare such a definition with that of currency (e.g., Euro, Dollar, BitSong);
+- the first refers to the fan token **object**. We can compare such a definition with that of currency (e.g., Euro, Dollar, BitSong);
 - the second, instead, is referred to the lifecycle of the fan token **instance**. Such definition is comparable with that of coin/money (e.g., the specific 1 Euro coin you could have in your pocket at a particular moment in time).
 
 We can describe the lifecycle of a fan token **object** through two states.
@@ -47,11 +47,13 @@ Referring to the figure above, once the fan token is detailed in the documentati
 - to **transfer the ownership**, which produces the changing of the owner, without modifying the landing state;
 - to **disable the minting ability**, which produces a state change to the state _2_. Here, the owner cannot mint the fan token anymore.
 
+Once the fan token lands in state _2_, the only possible action is to transfer its ownership. Here, the owner **can enable the minting ability** no more.
+
 Also referring to the lifecycle of a fan token **instance**, it is possible to identify two states.
 
 ![Fantoken instance lifecycle](img/fantoken_instance_lifecycle.png "Fantoken instance lifecycle")
 
-With respect to the figure above, when the fan token object is issued, we can **mint** it. Minting leads to the birth of a new instance, moving the fan token instance to state _1_. In this state, the token can be:
+Concerning to the figure above, when the fan token object is issued, we can **mint** it. Minting leads to the birth of a new instance, moving the fan token instance to state _1_. In this state, the token can be:
 
 - **traded**, which produces the changing of the owner, without modifying the landing state;
 - **burned**, which produces a state change to the state _2_, where the owner cannot operate on the fan token instance anymore.
