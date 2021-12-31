@@ -43,3 +43,16 @@ type FanToken struct {
 ```
 
 ## BurnedCoins
+
+Another section in this module state is represented by **BurnedCoins**. It contains the total amount of all the burned tokens.
+
+```go
+BurnedCoins: []sdk.Coin
+```
+
+```go
+type Coin struct {
+	Denom  string
+	Amount Int
+}
+```
