@@ -12,4 +12,5 @@ digraph finite_state_machine {
     
     1  -> 1 [ label = "ownership transfer", fontsize=14, color="gray", fontcolor="gray"];
     1  -> 2 [ label = "disable minting", fontsize=14, color="gray", fontcolor="gray"];
+    2  -> 2 [ label = "ownership transfer", fontsize=14, color="gray", fontcolor="gray"];
 }
