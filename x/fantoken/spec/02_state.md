@@ -4,7 +4,7 @@ order: 2
 
 # State
 
-The `fantoken` module keeps track of [**parameters**](#Params), [**fan tokens**](#Token), and **burned coins**.
+The `fantoken` module keeps track of [**parameters**](#Params), [**fan tokens**](#Token), and [**burned coins**](#BurnedCoins).
 
 ```
 Params:      sdk.Coin
@@ -14,7 +14,7 @@ BurnedCoins: []sdk.Coin
 
 ## Params
 
-In the state definition, we can find the **params**. This section corresponds to a module-wide configuration structure that stores system parameters. In particular, it defines the overall fantoken module functioning and contains the **issuePrice** for the fan token. Such an implementation allows governance to decide the issue price for the tokens arbitrarily since proposals can modify it.
+In the state definition, we can find the **Params**. This section corresponds to a module-wide configuration structure that stores system parameters. In particular, it defines the overall fantoken module functioning and contains the **issuePrice** for the fan token. Such an implementation allows governance to decide the issue price for the tokens arbitrarily since proposals can modify it.
 
 ```go
 type Params struct {
@@ -24,7 +24,13 @@ type Params struct {
 
 ## Token
 
-Definition of data structure of Fungible Token
+The state contains a list of **Tokens**. They are [fan tokens](01_concepts.md#Fan-token) (fungible tokens deriving by the ERC-20 Standard), and their state information are:
+
+- **Name**, which corresponds to the name of the fan token. It is a `string` and _cannot change_ for the whole life of the token;
+- **MaxSupply**, that represents the maximum number of possible mintable tokens. It is an `integer number` and _cannot change_ for the whole life of the token;
+- **Mintable**, indicating the ability of the token to be minted. It is a `boolean` value and \*can change **only once\*** during the token lifecycle. At the issuing it is set to true, and the token can be minted. When the owner change this value in the state, the token can be minted no more.
+- **Owner**, which is the current owner of the token. It is an address and _can change_ during the token lifecycle thanks to the **ownership transfer**;
+- **MetaData**, which contains metadata for the fan token and is made up of the description, the denom, the symbol and a set of denomUnits. It is a `bank.Metadata` object and _cannot change_ for the whole life of the token.
 
 ```go
 type FanToken struct {
@@ -35,3 +41,5 @@ type FanToken struct {
 	MetaData	bank.Metadata
 }
 ```
+
+## BurnedCoins
