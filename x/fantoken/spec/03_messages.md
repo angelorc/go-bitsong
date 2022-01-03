@@ -11,12 +11,12 @@ The `MsgIssueFanToken` message is used to issue a new fan token. It takes in inp
 
 ```go
 type MsgIssueFanToken struct {
-	Symbol		string
-	Name		string
-	MaxSupply	sdk.Int
-	Description string
-	Owner		string
-	IssueFee	sdk.Coin
+	Symbol			string
+	Name			string
+	MaxSupply		sdk.Int
+	Description 	string
+	Owner			string
+	IssueFee		sdk.Coin
 }
 ```
 
@@ -25,47 +25,53 @@ The `MsgEditFanToken` message is used to modify an existing fan token. It takes 
 
 ```go
 type MsgEditFanToken struct {
-	Denom		string
-	Mintable	bool
-	Owner		string
+	Denom			string
+	Mintable		bool
+	Owner			string
 }
 ```
 
 ## MsgMintFanToken
 
-The `MsgEditFanToken` message is used to modify an existing fan token. It takes in input `Recipient`, `Denom`, `Amount`, and `Owner` (all described in [fan token definition](01_concepts.md#Fan-token) except the `Amount`, which is the quantity of token to mint). In such a message, the `Recipient` is not required and, its default value is the same of `Owner`. 
+The `MsgMintFanToken` message is used to modify an existing fan token. It takes in input `Recipient`, `Denom`, `Amount`, and `Owner` (all described in [fan token definition](01_concepts.md#Fan-token) except the `Amount`, which is the quantity of token to mint). In such a message, the `Recipient` is not required and, its default value is the same of `Owner`. 
 Thanks to these values, the module can verify whether the minting operation is lawful (i.e., requested: by the owner, on a mintable fan token, and for a quantity that allow to do not overcome the maximum supply), recalling that only the owner of the fan token can mint the token to a specified account. 
 At this point, the token is minted, the result is sent to the recipient, and an `EventTypeMintFanToken` event is emitted.
 
 ```go
 type MsgMintFanToken struct {
-	Recipient	string
-	Denom		string
-	Amount		sdk.Int
-	Owner		string
+	Recipient		string
+	Denom			string
+	Amount			sdk.Int
+	Owner			string
 }
 ```
 
 ## MsgBurnFanToken
 
-The action will be completed if the sender balance > amount to burn
+The `MsgBurnFanToken` message is used to burn fan token. It takes in input `Denom`, `Amount`, and `Sender` (`Denom` is described in [fan token definition](01_concepts.md#Fan-token), `Amount` is the quantity of token to burn, and sender must be equal to the owner).
+The module can verify whether the burning operation is lawful (i.e., requested by the owner, which has a sufficient amount of token, in other words check if `sender balance` > `amount to burn`). At this point, the token is burned and an `EventTypeBurnFanToken` event is emitted.
+In such a way, that specific token ends its lifecycle, as shown in the [relative docs](01_concepts.md#Lifecycle-of-a-fan-token).
 
 ```go
 type MsgBurnFanToken struct {
-	Denom		string
-	Amount		sdk.Int
-	Sender		string
+	Denom			string
+	Amount			sdk.Int
+	Sender			string
 }
 ```
 
 ## MsgTransferFanTokenOwner
 
-Transfer the ownership of the fantoken to another account owner
+The `MsgTransferFanToken` message is used to transfer the ownership of a fan token. It takes in input `Denom`, `SrcOwner`, and `DstOwner` (`Denom` is described in [fan token definition](01_concepts.md#Fan-token), `Src` and `Dst` `Owners` are respectively the "*old*" and "*new*" owners of the token).
+
+The module can verify whether the operation is lawful (i.e., the requesting account is actually the owner of the fan token). 
+At this point, the `DstOwner` becomes the token owner and an `EventTypeTransferFanTokenOwner` event is emitted.
+This operation enable the **ownership transfer** transition described in the [lifecycle of a fan token documentation](01_concepts.md#Lifecycle-of-a-fan-token).
 
 ```go
 type MsgTransferFanTokenOwner struct {
-	Denom		string
-	SrcOwner	string
-	DstOwner	string
+	Denom			string
+	SrcOwner		string
+	DstOwner		string
 }
 ```
