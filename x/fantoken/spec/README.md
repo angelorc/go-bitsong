@@ -4,7 +4,7 @@
 
 This document specifies the _fantoken_ module of the BitSong chain.
 
-The _fantoken_ module enables the BitSong chain to support fan tokens, allowing actors in the content creation industry to create their economy. In this sense, they can generate new ways to monetize their music and brand and provide a unique and innovative channel to engage with fans. Thanks to this module, players from the content creation universe can start minting their _fan tokens_ (which are **fungible tokens**) and list them within a few minutes for low fees.
+The _fantoken_ module enables the BitSong chain to support fan tokens, allowing actors in the content creation industry to create their economy. In this sense, they can generate new ways to monetize their music and brand and provide a unique and innovative channel to engage with fans. Thanks to this module, players from the content creation universe can start minting their _fan tokens_ (which are **fungible tokens**) and listing them within a few minutes for low fees.
 
 ### An example: Fan tokens in the music Industry
 
