@@ -21,15 +21,14 @@ To provide you with some examples, you can think that it is possible to use them
 A **fan token** is characterized by:
 | Attribute | Type | Description |
 | --------------------- | ---------------------------- | ---------------------------------------------- |
-| symbol | `string` | It is chosen by the user. It should follow the ISO standard for the [alphabetic code](https://www.iso.org/iso-4217-currency-codes.html) (e.g., USD, EUR, BTSG, etc.).|
-| name | `string` | It is chosen by the user. It should correspond to the long name the user want to associate to the symbol (e.g., Dollar, Euro, BitSong). |
-| maxSupply | `sdk.Int` | It is chosen by the user. It is the maximum supply value of mintable tokens from its definition. It is expressed in micro unit (![formula](https://render.githubusercontent.com/render/math?math=\color{gray}\mu=10^{-6})). For this reason, to indicate a maximum supply of ![formula](https://render.githubusercontent.com/render/math?math=\color{gray}456) tokens, this value must be equal to ![formula](https://render.githubusercontent.com/render/math?math=\color{gray}456\cdot10^{6}=456,000,000).|
-| description | `string` | It is chosen by the user. It is a small description about the fan token the user is gonna issuing. |
-| mintable | `boolean` | It is true at issuing. It can be later changed by the owner. If it is `true`, the fan token owner can mint the token to a particular address. |
-| owner | `sdk.AccAddress` | It is the owner of the fan token. It can be changed to trasfer the ownership of the token during the time. It is mainly used to verify the ability to perform operations.|
-| denom | `string` | It is an hash calculated on Owner, Symbol, and Name of the fan token. It is the hash identifying the fan token and is used to [prevent the creation of identical tokens](#Uniqueness-of-the-denom). |
-| metadata | `banktypes.Metadata` | It is made up of the description, the denom, the symbol and a set of denomUnits. It is generated and it is not directly editable.|
-| issueFee | `sdk.Coin` | It is chosen by the user. It describes the issuing fee both for for the `amount` and for the `coin`. An example value could be `1000000ubtsg`.|
+| symbol | `string` | It is chosen once by the user and can be any string matching the pattern `^[a-z0-9]{1,64}$`, i.e., any lowercase string containing letters and digits with a length between 1 and 64 characters.It should follow the ISO standard for the [alphabetic code](https://www.iso.org/iso-4217-currency-codes.html) (e.g., USD, EUR, BTSG, etc.).|
+| name | `string` | It is chosen once by the user. It should correspond to the long name the user want to associate to the symbol (e.g., Dollar, Euro, BitSong). |
+| maxSupply | `sdk.Int` | It is chosen once by the user. It is the maximum supply value of mintable tokens from its definition. It is expressed in micro unit (![formula](https://render.githubusercontent.com/render/math?math=\color{gray}\mu=10^{-6})). For this reason, to indicate a maximum supply of ![formula](https://render.githubusercontent.com/render/math?math=\color{gray}456) tokens, this value must be equal to ![formula](https://render.githubusercontent.com/render/math?math=\color{gray}456\cdot10^{6}=456,000,000).|
+| mintable | `boolean` | It is `true` at issuing. It can be later changed by the owner. If it is `true`, the fan token owner can mint the token. |
+| owner | `sdk.AccAddress` | It is the address of the owner of the fan token. It can be changed to trasfer the ownership of the token during the time. It is mainly used to verify the ability to perform operations.|
+| denom | `string` | It is an hash calculated on `Owner`, `Symbol`, `Name` and `Block Height` of the issuing transaction of the fan token. It is the hash identifying the fan token and is used to [prevent the creation of identical tokens](#Uniqueness-of-the-denom). |
+| metadata | `Metadata` | It is generated once and it is made up of `Name`, `Symbol`, and `URI`. More specifically, the URI contains a link to a resource with a set of information linked to the fan token.|
+
 
 ## Lifecycle of a fan token
 
@@ -42,7 +41,7 @@ We can describe the lifecycle of a fan token **object** through two states.
 
 ![Fantoken object lifecycle](img/fantoken_object_lifecycle.png "Fantoken object lifecycle")
 
-Referring to the figure above, once the fan token is detailed in the documentation, to "create" the fan token, we need to **issue it**. This operation leads to the birth of the object and thus to its first state, state _1_. Here, the token is related to an owner, which can mint it. From this state, the owner can perform two actions on the object:
+Referring to the figure above, as detailed in the documentation, to "create" the fan token, we need to **issue it**. This operation leads to the birth of the object and thus to its first state, state _1_. Here, the token is related to an owner, which can mint it. From this state, the owner can perform two actions on the object:
 
 - to **transfer the ownership**, which produces the changing of the owner, without modifying the landing state;
 - to **disable the minting ability**, which produces a state change to the state _2_. Here, the owner cannot mint the fan token anymore.
@@ -60,12 +59,13 @@ Concerning to the figure above, when the fan token object is issued, we can **mi
 
 ## Uniqueness of the denom
 
-The _denom_ is calculated on the Owner, Symbol, and Name of the fan token.
+The _denom_ is calculated on `Owner`, `Symbol`, `Name` and `Block Height` of the issuing transaction of the fan token. 
 
 ```go
-func GetFantokenDenom(creator sdk.AccAddress, symbol, name string) string {
-	return "ft" + tmcrypto.AddressHash([]byte(creator.String()+symbol+name)).String()
+func GetFantokenDenom(height int64, creator sdk.AccAddress, symbol, name string) string {
+	bz := []byte(fmt.Sprintf("%d%s%s%s", height, creator.String(), symbol, name))
+	return "ft" + tmcrypto.AddressHash(bz).String()
 }
 ```
 
-The _denom_ of every fan token starts with the prefix `ft`. Follows a **hash** of Owner, Symbol, and Name of the fan token. This _denom_ is used as base denom for the fan token, and, for this reason, it should be **unique**. In this sense, since the hash also depends on the creator, multiple fan tokens with the same name and symbol can co-exist. In this case, they can not be created by the same account.
+The _denom_ of every fan token starts with the prefix `ft`. Follows a **hash** of `Block Height`, `Owner`, `Symbol` and `Name` of the fan token. This _denom_ is used as base denom for the fan token, and, for this reason, it should be **unique**. In this sense, since the hash depends both on the `Creator` and the `Block Height`, multiple fan tokens with the same name and symbol can co-exist even created by the same address.
