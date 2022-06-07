@@ -19,8 +19,8 @@ Even if they both represent the token, we generate them in different ways, and, 
 
 More specifically:
 
-- **denom** is calculated by the tendermint crypto hash through the creator, symbol, and name. For this reason, it is _unique_;
-- **symbol**, on the other hand, is defined by the user and can be any string.
+- **denom** is calculated by the tendermint crypto hash function through the creator, symbol, name and block height for the transaction. For this reason, it is _unique_;
+- **symbol**, on the other hand, is defined by the user and can be any string matching the pattern `^[a-z0-9]{1,64}$`, so any lowercase string containing letters and digits with a length between 1 and 64 characters.
 
 Finally, thanks to the _fantoken_ module, users on BitSong can:
 
